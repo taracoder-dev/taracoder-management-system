@@ -7,10 +7,10 @@ import { RoleService } from '../../core/services/role.service';
 import { User, Notification } from '../../core/models/index';
 
 @Component({
-    selector: 'app-sidebar',
-    standalone: true,
-    imports: [CommonModule, RouterModule],
-    template: `
+  selector: 'app-sidebar',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  template: `
     <aside
       class="fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-blue-800 to-blue-900 text-white shadow-lg transform transition-transform duration-300"
       [class.w-20]="isCollapsed()"
@@ -181,17 +181,71 @@ import { User, Notification } from '../../core/models/index';
 
           <!-- Employee Module -->
           @if (currentUser()?.role === 'developer' || currentUser()?.role === 'tl') {
-            <a
-              routerLink="/employee/profile"
-              routerLinkActive="bg-blue-600"
+
+            <!-- My Profile -->
+            <a routerLink="/employee/profile" routerLinkActive="bg-blue-600"
               class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
-              [title]="isCollapsed() ? 'My Profile' : ''"
-            >
+              [title]="isCollapsed() ? 'My Profile' : ''">
               <span class="text-xl">👤</span>
-              @if (!isCollapsed()) {
-                <span>My Profile</span>
-              }
+              @if (!isCollapsed()) { <span>My Profile</span> }
             </a>
+
+            <!-- Apply Leaves -->
+            <a routerLink="/employee/leaves" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Apply Leaves' : ''">
+              <span class="text-xl">🏖️</span>
+              @if (!isCollapsed()) { <span>Apply Leaves</span> }
+            </a>
+
+            <!-- Referral -->
+            <a routerLink="/employee/referral" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Referral' : ''">
+              <span class="text-xl">🤝</span>
+              @if (!isCollapsed()) { <span>Referral</span> }
+            </a>
+
+            <!-- Documents -->
+            <a routerLink="/employee/documents" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Documents' : ''">
+              <span class="text-xl">📄</span>
+              @if (!isCollapsed()) { <span>Documents</span> }
+            </a>
+
+            <!-- Help Desk -->
+            <a routerLink="/employee/helpdesk" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Help Desk' : ''">
+              <span class="text-xl">🎧</span>
+              @if (!isCollapsed()) { <span>Help Desk</span> }
+            </a>
+
+            <!-- Quick Links -->
+            <a routerLink="/employee/quicklinks" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Quick Links' : ''">
+              <span class="text-xl">🔗</span>
+              @if (!isCollapsed()) { <span>Quick Links</span> }
+            </a>
+
+            <!-- People -->
+            <a routerLink="/employee/people" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'People' : ''">
+              <span class="text-xl">👥</span>
+              @if (!isCollapsed()) { <span>People</span> }
+            </a>
+
+            <!-- To-Do -->
+            <a routerLink="/employee/todo" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'To-Do' : ''">
+              <span class="text-xl">✅</span>
+              @if (!isCollapsed()) { <span>To-Do</span> }
+            </a>
+
           }
         </div>
       </nav>
@@ -221,59 +275,59 @@ import { User, Notification } from '../../core/models/index';
       </div>
     </aside>
   `,
-    styles: [
-        `
+  styles: [
+    `
       :host {
         display: block;
       }
     `,
-    ],
+  ],
 })
 export class SidebarComponent {
-    private authService = inject(AuthService);
-    private router = inject(Router);
-    roleService = inject(RoleService);
-    private dataService = inject(DataService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  roleService = inject(RoleService);
+  private dataService = inject(DataService);
 
-    currentUser = signal<User | null>(null);
-    isCollapsed = signal(false);
-    expandedMenus = signal({ hr: false, project: false, sales: false, employee: false });
+  currentUser = signal<User | null>(null);
+  isCollapsed = signal(false);
+  expandedMenus = signal({ hr: false, project: false, sales: false, employee: false });
 
-    constructor() {
-        this.currentUser.set(this.authService.getCurrentUser());
-    }
+  constructor() {
+    this.currentUser.set(this.authService.getCurrentUser());
+  }
 
-    toggleSidebar(): void {
-        this.isCollapsed.update((val) => !val);
-    }
+  toggleSidebar(): void {
+    this.isCollapsed.update((val) => !val);
+  }
 
-    toggleMenu(menu: string): void {
-        this.expandedMenus.update((menus: any) => ({
-            ...menus,
-            [menu]: !menus[menu],
-        }));
-    }
+  toggleMenu(menu: string): void {
+    this.expandedMenus.update((menus: any) => ({
+      ...menus,
+      [menu]: !menus[menu],
+    }));
+  }
 
-    toggleTheme(): void {
-        document.documentElement.classList.toggle('dark');
-    }
+  toggleTheme(): void {
+    document.documentElement.classList.toggle('dark');
+  }
 
-    canAccess(module: string): boolean {
-        const user = this.currentUser();
-        if (!user) return false;
+  canAccess(module: string): boolean {
+    const user = this.currentUser();
+    if (!user) return false;
 
-        const accessMap: Record<string, string[]> = {
-            hr: ['super-admin', 'admin', 'hr', 'pm', 'tl'],
-            project: ['super-admin', 'admin', 'pm', 'tl', 'developer'],
-            sales: ['super-admin', 'admin', 'sm', 'sales'],
-            employee: ['developer', 'tl', 'pm'],
-        };
+    const accessMap: Record<string, string[]> = {
+      hr: ['super-admin', 'admin', 'hr', 'pm', 'tl'],
+      project: ['super-admin', 'admin', 'pm', 'tl', 'developer'],
+      sales: ['super-admin', 'admin', 'sm', 'sales'],
+      employee: ['developer', 'tl', 'pm'],
+    };
 
-        return accessMap[module]?.includes(user.role) || false;
-    }
+    return accessMap[module]?.includes(user.role) || false;
+  }
 
-    logout(): void {
-        this.authService.logout();
-        this.router.navigate(['/auth/login']);
-    }
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
+  }
 }

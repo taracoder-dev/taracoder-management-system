@@ -90,6 +90,7 @@ export class RoleService {
             canViewSalarySlips: false,
             canGenerateSalarySlips: false,
             canViewActivityLog: true,
+        
         },
         hr: {
             canViewAnalytics: false,

@@ -7,6 +7,13 @@ import { ProjectsComponent, TasksComponent } from './modules/project/project.com
 import { LeadsComponent } from './modules/sales/leads.component';
 import { EmployeeProfileComponent } from './modules/employee/employee-profile.component';
 import { UnauthorizedComponent } from './shared/components/unauthorized.component';
+import { EmployeeLeavesComponent } from './modules/employee/employee-leaves.component';
+import { EmployeeReferralComponent } from './modules/employee/employee-referral.component';
+import { EmployeeHelpdeskComponent } from './modules/employee/employee-helpdesk.component';
+import { EmployeeQuicklinksComponent } from './modules/employee/employee-quicklinks.component';
+import { EmployeePeopleComponent } from './modules/employee/employee-people.component';
+import { EmployeeTodoComponent } from './modules/employee/employee-todo.component';
+import { EmployeeDocumentsComponent } from './modules/employee/employee-documents.component';
 
 export const routes: Routes = [
     // Authentication Routes
@@ -108,6 +115,17 @@ export const routes: Routes = [
                 component: EmployeeProfileComponent,
             },
             {
+                path: 'leaves',
+                component: EmployeeLeavesComponent,
+            },
+            { path: 'referral',    component: EmployeeReferralComponent },
+            { path: 'documents',   component: EmployeeDocumentsComponent },
+            { path: 'helpdesk',    component: EmployeeHelpdeskComponent },
+            { path: 'quicklinks',  component: EmployeeQuicklinksComponent },
+            { path: 'people',      component: EmployeePeopleComponent },
+            { path: 'todo',        component:EmployeeTodoComponent },
+                        
+  {
                 path: '',
                 redirectTo: 'profile',
                 pathMatch: 'full',
