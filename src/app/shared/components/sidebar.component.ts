@@ -109,7 +109,63 @@ import { User, Notification } from '../../core/models/index';
                   Attendance
                 </a>
               </div>
+
             }
+                <!-- Apply Leaves -->
+                <a routerLink="/employee/leaves" routerLinkActive="bg-blue-600"
+                  class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                  [title]="isCollapsed() ? 'Apply Leaves' : ''">
+                  <span class="text-xl">🏖️</span>
+                  @if (!isCollapsed()) { <span>Apply Leaves</span> }
+                </a>
+
+                <!-- Referral -->
+                <a routerLink="/employee/referral" routerLinkActive="bg-blue-600"
+                  class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                  [title]="isCollapsed() ? 'Referral' : ''">
+                  <span class="text-xl">🤝</span>
+                  @if (!isCollapsed()) { <span>Referral</span> }
+                </a>
+
+                <!-- Documents -->
+                <a routerLink="/employee/documents" routerLinkActive="bg-blue-600"
+                  class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                  [title]="isCollapsed() ? 'Documents' : ''">
+                  <span class="text-xl">📄</span>
+                  @if (!isCollapsed()) { <span>Documents</span> }
+                </a>
+
+                <!-- Help Desk -->
+                <a routerLink="/employee/helpdesk" routerLinkActive="bg-blue-600"
+                  class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                  [title]="isCollapsed() ? 'Help Desk' : ''">
+                  <span class="text-xl">🎧</span>
+                  @if (!isCollapsed()) { <span>Help Desk</span> }
+                </a>
+
+                <!-- Quick Links -->
+                <a routerLink="/employee/quicklinks" routerLinkActive="bg-blue-600"
+                  class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                  [title]="isCollapsed() ? 'Quick Links' : ''">
+                  <span class="text-xl">🔗</span>
+                  @if (!isCollapsed()) { <span>Quick Links</span> }
+                </a>
+
+                <!-- People -->
+                <a routerLink="/employee/people" routerLinkActive="bg-blue-600"
+                  class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                  [title]="isCollapsed() ? 'People' : ''">
+                  <span class="text-xl">👥</span>
+                  @if (!isCollapsed()) { <span>People</span> }
+                </a>
+
+                <!-- To-Do -->
+                <a routerLink="/employee/todo" routerLinkActive="bg-blue-600"
+                  class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                  [title]="isCollapsed() ? 'To-Do' : ''">
+                  <span class="text-xl">✅</span>
+                  @if (!isCollapsed()) { <span>To-Do</span> }
+                </a>
           }
 
           <!-- Project Module -->
@@ -145,8 +201,65 @@ import { User, Notification } from '../../core/models/index';
                 >
                   Tasks
                 </a>
+
               </div>
+
             }
+                  <!-- Apply Leaves -->
+                  <a routerLink="/employee/leaves" routerLinkActive="bg-blue-600"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                    [title]="isCollapsed() ? 'Apply Leaves' : ''">
+                    <span class="text-xl">🏖️</span>
+                    @if (!isCollapsed()) { <span>Apply Leaves</span> }
+                  </a>
+
+                  <!-- Referral -->
+                  <a routerLink="/employee/referral" routerLinkActive="bg-blue-600"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                    [title]="isCollapsed() ? 'Referral' : ''">
+                    <span class="text-xl">🤝</span>
+                    @if (!isCollapsed()) { <span>Referral</span> }
+                  </a>
+
+                  <!-- Documents -->
+                  <a routerLink="/employee/documents" routerLinkActive="bg-blue-600"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                    [title]="isCollapsed() ? 'Documents' : ''">
+                    <span class="text-xl">📄</span>
+                    @if (!isCollapsed()) { <span>Documents</span> }
+                  </a>
+
+                  <!-- Help Desk -->
+                  <a routerLink="/employee/helpdesk" routerLinkActive="bg-blue-600"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                    [title]="isCollapsed() ? 'Help Desk' : ''">
+                    <span class="text-xl">🎧</span>
+                    @if (!isCollapsed()) { <span>Help Desk</span> }
+                  </a>
+
+                  <!-- Quick Links -->
+                  <a routerLink="/employee/quicklinks" routerLinkActive="bg-blue-600"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                    [title]="isCollapsed() ? 'Quick Links' : ''">
+                    <span class="text-xl">🔗</span>
+                    @if (!isCollapsed()) { <span>Quick Links</span> }
+                  </a>
+
+                  <!-- People -->
+                  <a routerLink="/employee/people" routerLinkActive="bg-blue-600"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                    [title]="isCollapsed() ? 'People' : ''">
+                    <span class="text-xl">👥</span>
+                    @if (!isCollapsed()) { <span>People</span> }
+                  </a>
+
+                  <!-- To-Do -->
+                  <a routerLink="/employee/todo" routerLinkActive="bg-blue-600"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+                    [title]="isCollapsed() ? 'To-Do' : ''">
+                    <span class="text-xl">✅</span>
+                    @if (!isCollapsed()) { <span>To-Do</span> }
+                  </a>
           }
 
           <!-- Sales Module -->
@@ -176,7 +289,63 @@ import { User, Notification } from '../../core/models/index';
                   Leads
                 </a>
               </div>
+
             }
+            <!-- Apply Leaves -->
+            <a routerLink="/employee/leaves" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Apply Leaves' : ''">
+              <span class="text-xl">🏖️</span>
+              @if (!isCollapsed()) { <span>Apply Leaves</span> }
+            </a>
+
+            <!-- Referral -->
+            <a routerLink="/employee/referral" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Referral' : ''">
+              <span class="text-xl">🤝</span>
+              @if (!isCollapsed()) { <span>Referral</span> }
+            </a>
+
+            <!-- Documents -->
+            <a routerLink="/employee/documents" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Documents' : ''">
+              <span class="text-xl">📄</span>
+              @if (!isCollapsed()) { <span>Documents</span> }
+            </a>
+
+            <!-- Help Desk -->
+            <a routerLink="/employee/helpdesk" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Help Desk' : ''">
+              <span class="text-xl">🎧</span>
+              @if (!isCollapsed()) { <span>Help Desk</span> }
+            </a>
+
+            <!-- Quick Links -->
+            <a routerLink="/employee/quicklinks" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'Quick Links' : ''">
+              <span class="text-xl">🔗</span>
+              @if (!isCollapsed()) { <span>Quick Links</span> }
+            </a>
+
+            <!-- People -->
+            <a routerLink="/employee/people" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'People' : ''">
+              <span class="text-xl">👥</span>
+              @if (!isCollapsed()) { <span>People</span> }
+            </a>
+
+            <!-- To-Do -->
+            <a routerLink="/employee/todo" routerLinkActive="bg-blue-600"
+              class="block px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
+              [title]="isCollapsed() ? 'To-Do' : ''">
+              <span class="text-xl">✅</span>
+              @if (!isCollapsed()) { <span>To-Do</span> }
+            </a>
           }
 
           <!-- Employee Module -->
@@ -252,16 +421,7 @@ import { User, Notification } from '../../core/models/index';
 
       <!-- Settings & Logout -->
       <div class="p-2 border-t border-blue-700 space-y-1">
-        <button
-          (click)="toggleTheme()"
-          class="w-full px-4 py-3 rounded-lg hover:bg-blue-700 transition flex items-center space-x-3"
-          [title]="isCollapsed() ? 'Toggle theme' : ''"
-        >
-          <span class="text-xl">🌙</span>
-          @if (!isCollapsed()) {
-            <span>Dark Mode</span>
-          }
-        </button>
+
         <button
           (click)="logout()"
           class="w-full px-4 py-3 rounded-lg hover:bg-red-600 transition flex items-center space-x-3 text-red-100"

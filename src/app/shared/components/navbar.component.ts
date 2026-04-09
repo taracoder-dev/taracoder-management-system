@@ -6,10 +6,10 @@ import { DataService } from '../../core/services/data.service';
 import { User, Notification } from '../../core/models/index';
 
 @Component({
-    selector: 'app-navbar',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-navbar',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <nav class="bg-white shadow-md h-16 flex items-center justify-between px-8 fixed top-0 left-64 right-0 z-40">
       <!-- Left Section -->
       <div class="flex items-center space-x-4">
@@ -18,8 +18,19 @@ import { User, Notification } from '../../core/models/index';
 
       <!-- Right Section -->
       <div class="flex items-center space-x-6">
+        <button
+          (click)="toggleTheme()"
+          class="w-full px-4 py-3 rounded-lg hover:bg-gray-100   transition flex items-center space-x-3"
+          [title]="isCollapsed() ? 'Toggle theme' : ''"
+        >
+          <span class="text-xl">🌙</span>
+          @if (!isCollapsed()) {
+            <span>Dark Mode</span>
+          }
+        </button>
         <!-- Notifications -->
         <div class="relative">
+
           <button
             (click)="toggleNotifications()"
             class="relative p-2 hover:bg-gray-100 rounded-lg transition"
@@ -134,73 +145,88 @@ import { User, Notification } from '../../core/models/index';
       </div>
     </nav>
   `,
-    styles: [
-        `
+  styles: [
+    `
       :host {
         display: block;
       }
     `,
-    ],
+  ],
 })
 export class NavbarComponent {
-    private authService = inject(AuthService);
-    private dataService = inject(DataService);
-    private router = inject(Router);
+  private authService = inject(AuthService);
+  private dataService = inject(DataService);
+  private router = inject(Router);
 
-    currentUser = signal<User | null>(null);
-    notifications = signal<Notification[]>([]);
-    showNotifications = signal(false);
-    showProfile = signal(false);
+  currentUser = signal<User | null>(null);
+  notifications = signal<Notification[]>([]);
+  showNotifications = signal(false);
+  showProfile = signal(false);
+  isCollapsed = signal(false);
+  expandedMenus = signal({ hr: false, project: false, sales: false, employee: false });
 
-    ngOnInit(): void {
-        this.currentUser.set(this.authService.getCurrentUser());
-        this.loadNotifications();
+  ngOnInit(): void {
+    this.currentUser.set(this.authService.getCurrentUser());
+    this.loadNotifications();
+  }
+  toggleSidebar(): void {
+    this.isCollapsed.update((val) => !val);
+  }
+
+  toggleMenu(menu: string): void {
+    this.expandedMenus.update((menus: any) => ({
+      ...menus,
+      [menu]: !menus[menu],
+    }));
+  }
+
+  toggleTheme(): void {
+    document.documentElement.classList.toggle('dark');
+  }
+  get unreadCount(): () => number {
+    return () => this.notifications().filter((n) => !n.read).length;
+  }
+
+  loadNotifications(): void {
+    const user = this.currentUser();
+    if (user) {
+      this.dataService.getNotifications(user.id).subscribe((notifs) => {
+        this.notifications.set(notifs);
+      });
     }
+  }
 
-    get unreadCount(): () => number {
-        return () => this.notifications().filter((n) => !n.read).length;
-    }
+  toggleNotifications(): void {
+    this.showNotifications.update((v) => !v);
+    this.showProfile.set(false);
+  }
 
-    loadNotifications(): void {
-        const user = this.currentUser();
-        if (user) {
-            this.dataService.getNotifications(user.id).subscribe((notifs) => {
-                this.notifications.set(notifs);
-            });
-        }
-    }
+  toggleProfile(): void {
+    this.showProfile.update((v) => !v);
+    this.showNotifications.set(false);
+  }
 
-    toggleNotifications(): void {
-        this.showNotifications.update((v) => !v);
-        this.showProfile.set(false);
-    }
+  markAsRead(notificationId: string): void {
+    this.dataService.markNotificationAsRead(notificationId).subscribe();
+    this.notifications.update((notifs) =>
+      notifs.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
+    );
+  }
 
-    toggleProfile(): void {
-        this.showProfile.update((v) => !v);
-        this.showNotifications.set(false);
-    }
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
+  }
 
-    markAsRead(notificationId: string): void {
-        this.dataService.markNotificationAsRead(notificationId).subscribe();
-        this.notifications.update((notifs) =>
-            notifs.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
-        );
-    }
-
-    logout(): void {
-        this.authService.logout();
-        this.router.navigate(['/auth/login']);
-    }
-
-    getPageTitle(): string {
-        const path = this.router.url;
-        if (path.includes('dashboard')) return '📊 Dashboard';
-        if (path.includes('employees')) return '👥 Employees';
-        if (path.includes('leaves')) return '📅 Leaves';
-        if (path.includes('attendance')) return '📋 Attendance';
-        if (path.includes('projects')) return '📋 Projects';
-        if (path.includes('tasks')) return '✅ Tasks';
-        if (path.includes('leads')) return '💼 Leads';
-        return '💼 Taracoder Management System';
-    }
+  getPageTitle(): string {
+    const path = this.router.url;
+    if (path.includes('dashboard')) return '📊 Dashboard';
+    if (path.includes('employees')) return '👥 Employees';
+    if (path.includes('leaves')) return '📅 Leaves';
+    if (path.includes('attendance')) return '📋 Attendance';
+    if (path.includes('projects')) return '📋 Projects';
+    if (path.includes('tasks')) return '✅ Tasks';
+    if (path.includes('leads')) return '💼 Leads';
+    return '💼 Taracoder Management System';
+  }
 }
