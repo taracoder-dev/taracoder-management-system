@@ -60,6 +60,9 @@ export class AuthService {
 
     // ✅ SESSION SET
     private setSession(response: LoginResponse): void {
+        if (response.user) {
+            response.user.role = this.normalizeRole(response.user.role);
+        }
         this.currentUser.set(response.user);
         this.isAuthenticated.set(true);
         this.authToken.set(response.accessToken);
@@ -80,6 +83,7 @@ export class AuthService {
         if (token && userJson) {
             try {
                 const user = JSON.parse(userJson) as User;
+                user.role = this.normalizeRole(user.role);
 
                 this.currentUser.set(user);
                 this.isAuthenticated.set(true);
@@ -88,6 +92,12 @@ export class AuthService {
                 this.logout();
             }
         }
+    }
+
+    private normalizeRole(role: string): UserRole {
+        if (!role) return 'developer' as UserRole;
+        const normalized = role.toLowerCase().replace('_', '-');
+        return normalized as UserRole;
     }
 
 

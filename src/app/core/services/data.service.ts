@@ -23,6 +23,11 @@ export class DataService {
     private http = inject(HttpClient);
     private apiUrl = environment.apiUrl;
 
+    // Users
+    getUsersList(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/user/list`);
+    }
+
     // Employees
     getEmployees(): Observable<Employee[]> {
         return this.http.get<Employee[]>(`${this.apiUrl}/hr/employees`);

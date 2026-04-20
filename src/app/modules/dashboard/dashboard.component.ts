@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { DataService } from '../../core/services/data.service';
@@ -24,8 +24,8 @@ import { User, DashboardStats } from '../../core/models/index';
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
                 <h3 class="text-gray-500 text-sm font-semibold mb-2">Total Users</h3>
-                <p class="text-3xl font-bold text-gray-900">45</p>
-                <p class="text-green-600 text-sm mt-2">↑ All Active</p>
+                <p class="text-3xl font-bold text-gray-900">{{ users().length }}</p>
+                <p class="text-green-600 text-sm mt-2">↑ {{ getActiveUserCount() }} Active</p>
               </div>
               <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-500">
                 <h3 class="text-gray-500 text-sm font-semibold mb-2">Active Projects</h3>
@@ -49,8 +49,8 @@ import { User, DashboardStats } from '../../core/models/index';
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
               <h3 class="text-gray-500 text-sm font-semibold mb-2">Total Employees</h3>
-              <p class="text-3xl font-bold text-gray-900">45</p>
-              <p class="text-green-600 text-sm mt-2">↑ 3 Active</p>
+              <p class="text-3xl font-bold text-gray-900">{{ users().length }}</p>
+              <p class="text-green-600 text-sm mt-2">↑ {{ getActiveUserCount() }} Active</p>
             </div>
             <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-500">
               <h3 class="text-gray-500 text-sm font-semibold mb-2">System Usage</h3>
@@ -214,15 +214,87 @@ import { User, DashboardStats } from '../../core/models/index';
           </div>
         }
       }
+
+      <!-- System Users List -->
+      @if (users().length > 0) {
+        <div class="bg-white rounded-lg shadow-md mt-8 p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">System Users Overview</h2>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Login</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                @for (user of users(); track user.id) {
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="h-10 w-10 flex-shrink-0 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                          {{ user.fullName.charAt(0).toUpperCase() }}
+                        </div>
+                        <div class="ml-4">
+                          <div class="text-sm font-medium text-gray-900">{{ user.fullName }}</div>
+                          <div class="text-sm text-gray-500">{{ user.email }}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200">
+                        {{ user.role }}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border"
+                            [ngClass]="user.active ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'">
+                        {{ user.active ? 'Active' : 'Inactive' }}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ user.createdAt | date:'mediumDate' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {{ user.lastLoginAt ? (user.lastLoginAt | date:'short') : 'Never Logged In' }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
     </div>
   `,
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
     private authService = inject(AuthService);
+    private dataService = inject(DataService);
     currentUser = signal<User | null>(null);
+    users = signal<any[]>([]);
 
     constructor() {
         this.currentUser.set(this.authService.getCurrentUser());
+    }
+
+    ngOnInit() {
+        const role = this.currentUser()?.role;
+        // Fetch users for relevant administrative roles
+        const adminRoles = ['super-admin', 'admin', 'hr', 'pm', 'tl'];
+        if (role && adminRoles.includes(role)) {
+            this.dataService.getUsersList().subscribe({
+                next: (res) => this.users.set(res),
+                error: (err) => console.error('Failed to load users list', err)
+            });
+        }
+    }
+
+    getActiveUserCount(): number {
+        return this.users().filter(u => u.active).length;
     }
 
     getGreeting(): string {
