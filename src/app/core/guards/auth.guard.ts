@@ -1,4 +1,5 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Router, CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { UserRole } from '../models';
@@ -11,6 +12,11 @@ export const authGuard: CanActivateFn = (
 ) => {
     const authService = inject(AuthService);
     const router = inject(Router);
+    const platformId = inject(PLATFORM_ID);
+
+    if (!isPlatformBrowser(platformId)) {
+        return true;
+    }
 
     if (authService.isLoggedIn()) {
         return true;
@@ -29,6 +35,11 @@ export const roleGuard: CanActivateFn = (
 ) => {
     const authService = inject(AuthService);
     const router = inject(Router);
+    const platformId = inject(PLATFORM_ID);
+
+    if (!isPlatformBrowser(platformId)) {
+        return true;
+    }
 
     // 🔒 Not logged in
     if (!authService.isLoggedIn()) {
@@ -62,10 +73,15 @@ export class NoAuthGuard {
 
     constructor(
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        @Inject(PLATFORM_ID) private platformId: Object
     ) {}
 
     canActivate(): boolean {
+        if (!isPlatformBrowser(this.platformId)) {
+            return true;
+        }
+
         if (!this.authService.isLoggedIn()) {
             return true;
         }

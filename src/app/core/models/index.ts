@@ -3,7 +3,7 @@ export type UserRole = 'super-admin' | 'admin' | 'hr' | 'pm' | 'tl' | 'developer
 export interface User {
     id: string;
     email: string;
-    name: string;
+    fullName: string;
     role: UserRole;
     profileImage?: string;
     department?: string;
@@ -17,7 +17,9 @@ export interface AuthCredentials {
 }
 
 export interface LoginResponse {
-    token: string;
+    accessToken: string;
+    refreshToken: string;
+    tokenType: string;
     user: User;
     expiresIn: number;
 }

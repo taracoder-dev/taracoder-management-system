@@ -17,7 +17,7 @@ import { DataTableComponent, TableColumn } from '../../shared/components/data-ta
       <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-8 shadow-lg">
         <div class="flex items-start justify-between">
           <div>
-            <h1 class="text-4xl font-bold mb-2">{{ currentUser()?.name ?? 'User' }}</h1>
+            <h1 class="text-4xl font-bold mb-2">{{ currentUser()?.fullName ?? 'User' }}</h1>
             <p class="text-blue-100 text-lg mb-4">{{ currentUser()?.role ? roleService.getRoleName(currentUser()!.role) : 'Unknown' }}</p>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div>
@@ -39,8 +39,8 @@ import { DataTableComponent, TableColumn } from '../../shared/components/data-ta
             </div>
           </div>
           <div class="w-24 h-24 rounded-full bg-blue-400 flex items-center justify-center text-4xl font-bold">
-            @if (currentUser()?.name) {
-              {{ currentUser()!.name.charAt(0).toUpperCase() }}
+            @if (currentUser()?.fullName) {
+              {{ currentUser()!.fullName.charAt(0).toUpperCase() }}
             }
           </div>
         </div>

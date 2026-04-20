@@ -98,10 +98,10 @@ import { User, Notification } from '../../core/models/index';
             title="Profile"
           >
             <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
-              {{ currentUser()?.name ? currentUser()!.name.charAt(0).toUpperCase() : 'U' }}
+              {{ currentUser()?.fullName ? currentUser()!.fullName.charAt(0).toUpperCase() : 'U' }}
             </div>
             <div class="hidden md:block text-left text-sm">
-              <p class="font-semibold text-gray-800">{{ currentUser()?.name }}</p>
+              <p class="font-semibold text-gray-800">{{ currentUser()?.fullName }}</p>
               <p class="text-xs text-gray-600">{{ currentUser()?.email }}</p>
             </div>
             <span class="text-gray-600">▼</span>
@@ -111,7 +111,7 @@ import { User, Notification } from '../../core/models/index';
           @if (showProfile()) {
             <div class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-2xl overflow-hidden z-50">
               <div class="p-4 border-b border-gray-200">
-                <p class="font-semibold text-gray-800">{{ currentUser()?.name }}</p>
+                <p class="font-semibold text-gray-800">{{ currentUser()?.fullName }}</p>
                 <p class="text-sm text-gray-600">{{ currentUser()?.email }}</p>
               </div>
               <div class="p-2">

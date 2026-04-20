@@ -12,7 +12,7 @@ import { User, DashboardStats } from '../../core/models/index';
     <div class="p-8 space-y-8">
       <!-- Welcome Section -->
       <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-8 shadow-lg">
-        <h1 class="text-3xl font-bold mb-2">Welcome, {{ currentUser()?.name }}! 👋</h1>
+        <h1 class="text-3xl font-bold mb-2">Welcome, {{ currentUser()?.fullName }}! 👋</h1>
         <p class="text-blue-100">{{ getGreeting() }}</p>
       </div>
 

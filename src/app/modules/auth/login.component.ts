@@ -6,19 +6,21 @@ import { AuthService } from '../../core/services/auth.service';
 import { UserRole } from '../../core/models/index';
 
 interface DemoAccount {
-    role: UserRole;
-    email: string;
-    password: string;
-    name: string;
+  role: UserRole;
+  email: string;
+  password: string;
+  fullName: string;
 }
 
 @Component({
-    selector: 'app-login',
-    standalone: true,
-    imports: [CommonModule, FormsModule],
-    template: `
-    <div class="min-h-screen bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 flex items-center justify-center p-4">
-      <div class="w-full max-w-4xl">
+  selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: `
+    <div class="min-h-screen bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 flex items-center justify-center p-4 relative">
+      <!-- Main Content -->
+
+      <div class="w-full max-w-4xl z-10">
         <!-- Main Login Container -->
         <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
@@ -47,10 +49,14 @@ interface DemoAccount {
                 <p class="text-gray-600">Sign in to your account to continue</p>
               </div>
 
-              <!-- Error Message -->
-              @if (error) {
-                <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-                  {{ error }}
+              <!-- Error Message Display -->
+              @if (errorPopupMessage) {
+                <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg shadow-sm flex items-start">
+                  <span class="text-red-600 text-xl mr-3">⚠️</span>
+                  <div>
+                    <h4 class="text-red-800 font-bold">Login Failed</h4>
+                    <p class="text-red-700 mt-1">{{ errorPopupMessage }}</p>
+                  </div>
                 </div>
               }
 
@@ -101,7 +107,7 @@ interface DemoAccount {
                       class="p-3 text-left border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition text-sm"
                       [disabled]="isLoading"
                     >
-                      <div class="font-semibold text-gray-900">{{ account.name }}</div>
+                      <div class="font-semibold text-gray-900">{{ account.fullName }}</div>
                       <div class="text-gray-600 text-xs truncate">{{ account.email }}</div>
                     </button>
                   }
@@ -113,103 +119,124 @@ interface DemoAccount {
 
         <!-- Footer Info -->
         <div class="text-center mt-8 text-white text-sm">
-          <p>🔐 This is a demo application with mock authentication</p>
+          <p>© 2026 Taracoder. All rights reserved. | Designed & Developed with ❤️ by Taracoder</p>
         </div>
       </div>
     </div>
   `,
-    styles: [
-        `
+  styles: [
+    `
       :host {
         display: block;
       }
     `,
-    ],
+  ],
 })
 export class LoginComponent {
-    private authService = inject(AuthService);
-    private router = inject(Router);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-    email = '';
-    password = '';
-    error = '';
-    isLoading = false;
+  email = '';
+  password = '';
+  isLoading = false;
+  errorPopupMessage = '';
 
-    demoAccounts: DemoAccount[] = [
-        {
-            role: 'super-admin',
-            email: 'super@taracoder.com',
-            password: '123456',
-            name: '👑 Super Admin',
-        },
-        {
-            role: 'admin',
-            email: 'admin@taracoder.com',
-            password: '123456',
-            name: '🛠️ Admin',
-        },
-        {
-            role: 'hr',
-            email: 'hr@taracoder.com',
-            password: '123456',
-            name: '👨‍💼 HR Manager',
-        },
-        {
-            role: 'pm',
-            email: 'pm@taracoder.com',
-            password: '123456',
-            name: '📋 Project Manager',
-        },
-        {
-            role: 'tl',
-            email: 'tl@taracoder.com',
-            password: '123456',
-            name: '🧑‍🏫 Team Leader',
-        },
-        {
-            role: 'developer',
-            email: 'dev@taracoder.com',
-            password: '123456',
-            name: '👨‍💻 Developer',
-        },
-        {
-            role: 'sm',
-            email: 'sm@taracoder.com',
-            password: '123456',
-            name: '💰 Sales Manager',
-        },
-        {
-            role: 'sales',
-            email: 'sales@taracoder.com',
-            password: '123456',
-            name: '📞 Sales Team',
-        },
-    ];
+  demoAccounts: DemoAccount[] = [
+    {
+      role: 'super-admin',
+      email: 'super@taracoder.com',
+      password: '123456',
+      fullName: '👑 Super Admin',
+    },
+    {
+      role: 'admin',
+      email: 'admin@taracoder.com',
+      password: '123456',
+      fullName: '🛠️ Admin',
+    },
+    {
+      role: 'hr',
+      email: 'hr@taracoder.com',
+      password: '123456',
+      fullName: '👨‍💼 HR Manager',
+    },
+    {
+      role: 'pm',
+      email: 'pm@taracoder.com',
+      password: '123456',
+      fullName: '📋 Project Manager',
+    },
+    {
+      role: 'tl',
+      email: 'tl@taracoder.com',
+      password: '123456',
+      fullName: '🧑‍🏫 Team Leader',
+    },
+    {
+      role: 'developer',
+      email: 'dev@taracoder.com',
+      password: '123456',
+      fullName: '👨‍💻 Developer',
+    },
+    {
+      role: 'sm',
+      email: 'sm@taracoder.com',
+      password: '123456',
+      fullName: '💰 Sales Manager',
+    },
+    {
+      role: 'sales',
+      email: 'sales@taracoder.com',
+      password: '123456',
+      fullName: '📞 Sales Team',
+    },
+  ];
 
-    login(): void {
-        if (!this.email || !this.password) {
-            this.error = 'Please enter both email and password';
-            return;
+  login(): void {
+    if (!this.email || !this.password) {
+      this.errorPopupMessage = 'Please enter both email and password';
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: (result) => {
+        if (result) {
+          this.router.navigate(['/dashboard']);
         }
-
-        this.isLoading = true;
-        this.error = '';
-
-        // Simulate API delay
-        setTimeout(() => {
-            const result = this.authService.login({ email: this.email, password: this.password });
-
-            if (result) {
-                this.router.navigate(['/dashboard']);
-            } else {
-                this.error = 'Invalid email or password';
-                this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Login API Error:', err);
+        let extractedMessage = 'Invalid email or password';
+        
+        if (err.error) {
+          if (typeof err.error === 'string') {
+            try {
+              const parsed = JSON.parse(err.error);
+              extractedMessage = parsed.message || parsed.error || extractedMessage;
+            } catch (e) {
+              extractedMessage = err.error;
             }
-        }, 500);
-    }
+          } else if (err.error.message) {
+            extractedMessage = err.error.message;
+          } else if (err.error.error) {
+            extractedMessage = err.error.error;
+          }
+        }
+        
+        this.errorPopupMessage = extractedMessage;
+        this.isLoading = false;
+      }
+    });
+  }
 
-    fillDemoAccount(account: DemoAccount): void {
-        this.email = account.email;
-        this.password = account.password;
-    }
+  clearError(): void {
+    this.errorPopupMessage = '';
+  }
+
+  fillDemoAccount(account: DemoAccount): void {
+    this.email = account.email;
+    this.password = account.password;
+  }
 }

@@ -42,10 +42,10 @@ import { User, Notification } from '../../core/models/index';
         @if (!isCollapsed()) {
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center font-bold">
-              {{ currentUser()?.name ? currentUser()!.name.charAt(0).toUpperCase() : 'U' }}
+              {{ currentUser()?.fullName ? currentUser()!.fullName.charAt(0).toUpperCase() : 'U' }}
             </div>
             <div class="flex-1">
-              <p class="font-semibold text-sm">{{ currentUser()?.name }}</p>
+              <p class="font-semibold text-sm">{{ currentUser()?.fullName }}</p>
               <p class="text-xs text-blue-200 capitalize">{{ roleService.getRoleName(currentUser()?.role!) }}</p>
             </div>
           </div>
